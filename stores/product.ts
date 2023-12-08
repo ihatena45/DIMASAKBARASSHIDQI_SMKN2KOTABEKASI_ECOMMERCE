@@ -43,5 +43,66 @@ export const useProductsStore = defineStore("products", {
                 this.products = data.value;
             }
         },
+        async addToCart(id: number, isCart: any) {
+            const { baseUrl, apikey } = useAppConfig();
+            const { data, error } = await useFetch(`/rest/v1/products?id=eq.${id}`, {
+                baseURL: baseUrl,
+                method: "PATCH",
+                headers: {
+                    apikey: apikey,
+                },
+                body: isCart,
+            });
+
+            if (error.value) {
+                this.status = false;
+                this.message = "Failed !!!";
+            } else if (data) {
+                this.status = true;
+                this.message = "successfully";
+                this.products = data.value;
+            }
+        },
+
+        async removeFromCart(id: number, isCart: any) {
+            const { baseUrl, apikey } = useAppConfig();
+            const { data, error } = await useFetch(`/rest/v1/products?id=eq.${id}`, {
+                baseURL: baseUrl,
+                method: "PATCH",
+                headers: {
+                    apikey: apikey,
+                },
+                body: isCart,
+            });
+
+            if (error.value) {
+                this.status = false;
+                this.message = "Failed !!!";
+            } else if (data) {
+                this.status = true;
+                this.message = "successfully";
+                this.products = data.value;
+            }
+        },
+
+        async getProductById(id: number) {
+            const { baseUrl, apikey } = useAppConfig();
+            const { data, error } = await useFetch(`/rest/v1/products?id=eq.${id}&select=*`, {
+                baseURL: baseUrl,
+                method: "GET",
+                headers: {
+                    apikey: apikey,
+                },
+            });
+
+            if (error.value) {
+                this.status = false;
+                this.message = "Failed !!!";
+            } else if (data) {
+                this.status = true;
+                this.message = "successfully";
+                this.products = data.value;
+            }
+        },
     }
 })
